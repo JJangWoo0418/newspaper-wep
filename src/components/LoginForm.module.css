@@ -1,0 +1,137 @@
+.card {
+    width: 100%;
+    max-width: 360px;
+    background-color: #ffffff;
+    padding: 32px;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+.title {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 24px;
+}
+
+/* input 공통 스타일 */
+.input {
+    width: 100%;
+    border: 1px solid #bbbbbb;
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin-bottom: 16px;
+    font-size: 14px;
+}
+
+/* Remember Me */
+.rememberRow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    margin-bottom: 18px;
+    cursor: pointer;
+}
+
+.checkbox {
+    width: 16px;
+    height: 16px;
+}
+
+.rememberText {
+    color: #444444;
+}
+
+/* 로그인 버튼 */
+.loginButton {
+    width: 100%;
+    border: none; /* 그라데이션이 더 깔끔하게 보이도록 */
+    border-radius: 6px;
+    padding: 10px 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff; /* 글씨는 화이트가 가장 잘 보임 */
+    cursor: pointer;
+    margin-bottom: 24px;
+
+    background: linear-gradient(
+        135deg,
+        #FFD6A5 0%,     /* 밝은 살구 */
+        #FFB784 100%    /* 은은한 오렌지 */
+    );
+    transition: 0.2s;
+}
+
+/* hover 효과 */
+.loginButton:hover {
+    background: linear-gradient(
+        135deg,
+        #FFC48A 0%,     /* 조금 더 진한 살구 */
+        #FFA76A 100%    /* 더 진한 오렌지 */
+    );
+}
+
+/* Divider */
+.dividerRow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.dividerLine {
+    width: 80px;
+    height: 1px;
+    background-color: #dddddd;
+}
+
+.dividerText {
+    font-size: 12px;
+    color: #888888;
+}
+
+/* 소셜 로그인 버튼 공통 */
+.socialButton {
+    width: 100%;
+    border-radius: 6px;
+    padding: 3px 20px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.socialText {
+    font-weight: 500;
+}
+
+/* 아래 링크 영역 */
+.bottomRow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+    font-size: 13px;
+    color: #666666;
+}
+
+.bottomLink {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: #555555;
+}
+
+.bottomLink:hover {
+    text-decoration: underline;
+}
+
+.bottomDivider {
+    color: #cccccc;
+}
