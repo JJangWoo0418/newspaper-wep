@@ -1,0 +1,61 @@
+.wrapper {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 24px 48px;
+}
+
+/* 상단 로고 포함 전체 내용 영역 */
+.content {
+    margin-top: 24px;
+}
+
+/* 검색 영역 */
+.searchRow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+/* 좌우 여백이 넓고 둥근 검색 박스 */
+.searchBox {
+    flex: 1;
+    background-color: #ffffff;
+    border-radius: 999px;
+    padding: 8px 20px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center;
+}
+
+.searchInput {
+    width: 100%;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    margin-left: 15;
+}
+
+/* 오른쪽 메뉴, 프로필 버튼 */
+.menuButton,
+.profileButton {
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    border: none;
+    background-color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+}
+
+/* 뉴스 카드 그리드 */
+.grid {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.buttonImage{
+    margin-left: 7;
+}
