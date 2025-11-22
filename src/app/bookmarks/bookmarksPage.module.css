@@ -1,0 +1,92 @@
+.pageWrapper {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px 24px 40px;
+}
+
+/* 상단 바 */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.backButton {
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    border: none;
+    background: rgba(255, 255, 255, 0.85);
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.title {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.quizButton {
+    padding: 6px 16px;
+    border-radius: 999px;
+    border: 1px solid #dddddd;
+    background-color: #ffffff;
+    font-size: 13px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+}
+
+.divider {
+    height: 1px;
+    background-color: #b9b0a4;
+    margin: 16px 0 20px;
+}
+
+/* 북마크 없을 때 */
+.emptyText {
+    margin-top: 40px;
+    text-align: center;
+    font-size: 14px;
+    color: #555555;
+    line-height: 1.6;
+}
+
+/* 카드 그리드 */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px 24px;
+}
+
+/* 개별 카드 */
+.card {
+    background-color: #ffffff;
+    border-radius: 14px;
+    padding: 10px 14px 12px;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+}
+
+.cardHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.cardWord {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.cardStar {
+    color: #ffb400;
+    font-size: 18px;
+}
+
+/* 뜻 리스트 */
+.cardMeaningList {
+    margin: 0;
+    padding-left: 18px;
+    font-size: 13px;
+}
