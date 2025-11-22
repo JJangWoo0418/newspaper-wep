@@ -1,12 +1,15 @@
 // src/components/CategoryFilter.tsx
+"use client";
+
 import styles from "./CategoryFilter.module.css";
 
-interface Props {
+type Props = {
     categories: string[];
     active: string;
-}
+    onSelect: (category: string) => void;
+};
 
-export default function CategoryFilter({ categories, active }: Props) {
+export default function CategoryFilter({ categories, active, onSelect }: Props) {
     return (
         <div className={styles.container}>
             {categories.map((cat) => {
@@ -19,6 +22,7 @@ export default function CategoryFilter({ categories, active }: Props) {
                                 ? `${styles.chip} ${styles.chipActive}`
                                 : styles.chip
                         }
+                        onClick={() => onSelect(cat)}
                     >
                         {cat}
                     </button>

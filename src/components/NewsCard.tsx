@@ -1,38 +1,40 @@
 // src/components/NewsCard.tsx
 import Image from "next/image";
+import Link from "next/link";
 import styles from "./NewsCard.module.css";
+import type { Article } from "@/data/articles";
 
-export interface NewsItem {
-    id: number;
-    category: string;
-    title: string;
-    reporter: string;
-    date: string;
-    imageUrl: string;
-}
+export default function NewsCard({ article }: { article: Article }) {
+    const safeImageUrl =
+        article.imageUrl && article.imageUrl.length > 5
+            ? article.imageUrl
+            : "/images/default-news.png";
 
-export default function NewsCard({ news }: { news: NewsItem }) {
     return (
-        <article className={styles.card}>
-            <div className={styles.imageWrapper}>
-                <Image
-                    src={news.imageUrl}
-                    alt={news.title}
-                    fill
-                    className={styles.image}
-                />
-            </div>
+        <Link href={`/article/${article.id}`} className={styles.link}>
+            <article className={styles.card}>
+                {/* 이미지 */}
+                <div className={styles.imageWrapper}>
+                    <Image
+                        src={safeImageUrl}
+                        alt={article.title}
+                        fill
+                        className={styles.image}
+                    />
+                </div>
 
-            <div className={styles.info}>
-                <div className={styles.metaTop}>
-                    <span className={styles.category}>{news.category}</span>
+                {/* 아래 정보 박스 */}
+                <div className={styles.bottomBox}>
+                    <span className={styles.categoryTag}>{article.category}</span>
+
+                    <h2 className={styles.title}>{article.title}</h2>
+
+                    <div className={styles.metaRow}>
+                        <span className={styles.reporter}>{article.reporter}</span>
+                        <span className={styles.date}>{article.date}</span>
+                    </div>
                 </div>
-                <h3 className={styles.title}>{news.title}</h3>
-                <div className={styles.metaBottom}>
-                    <span className={styles.reporter}>{news.reporter}</span>
-                    <span className={styles.date}>{news.date}</span>
-                </div>
-            </div>
-        </article>
+            </article>
+        </Link>
     );
 }
