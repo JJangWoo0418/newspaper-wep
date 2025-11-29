@@ -2,13 +2,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./NewsCard.module.css";
-import type { Article } from "@/data/articles";
+import type { Article } from "@/types/article";
 
 export default function NewsCard({ article }: { article: Article }) {
     const safeImageUrl =
         article.imageUrl && article.imageUrl.length > 5
             ? article.imageUrl
-            : "/images/default-news.png";
+            : "/images/default-news-image.png";
 
     return (
         <Link href={`/article/${article.id}`} className={styles.link}>

@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState, use, useEffect, } from "react";
 import styles from "./articleDetail.module.css";
 import DictionaryPanel from "@/components/DictionaryPanel";
-import { ARTICLES, type Article } from "@/data/articles";
+import type { Article } from "@/types/article";
 import { useRouter } from "next/navigation";
 
 interface ArticlePageProps {
@@ -17,17 +17,7 @@ export default function ArticleDetailPage({ params }: ArticlePageProps) {
 
     const { id } = use(params);
 
-    const article: Article | undefined = ARTICLES.find(
-        (a) => a.id === id
-    );
-
-    if (!article) {
-        return (
-            <div className={styles.notFound}>
-                해당 기사를 찾을 수 없습니다.
-            </div>
-        );
-    }
+    const [article, setArticle] = useState<Article | null>(null)
 
     // 언어 토글
     const [lang, setLang] = useState("ko"); // 기본: 한글
@@ -39,15 +29,17 @@ export default function ArticleDetailPage({ params }: ArticlePageProps) {
     const [relatedArticles, setRelatedArticles] = useState<Article[]>([]);
 
     useEffect(() => {
-        // 현재 기사 제외
-        const others = ARTICLES.filter((a) => a.id !== article.id);
+        async function load() {
+            const res = await fetch("/api/news");
+            const list: Article[] = await res.json();
+    
+            const found = list.find((a) => a.id === id);
+            setArticle(found ?? null);
+        }
+        load();
+    }, [id]);
 
-        // 랜덤 섞기
-        const shuffled = [...others].sort(() => Math.random() - 0.5);
-
-        // 5개만 저장
-        setRelatedArticles(shuffled.slice(0, 5));
-    }, [article.id]);
+    if (!article) return <div>해당 기사를 찾을 수 없습니다</div>;
 
     return (
         <div className={styles.pageWrapper}>
@@ -87,7 +79,7 @@ export default function ArticleDetailPage({ params }: ArticlePageProps) {
                 <section className={styles.articleCard}>
                     <div className={styles.articleImageWrapper}>
                         <Image
-                            src={article.imageUrl}
+                            src={article.imageUrl ?? "/images/no-image.png"}
                             alt={article.title}
                             fill
                             className={styles.articleImage}

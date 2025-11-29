@@ -1,138 +1,76 @@
 .wrapper {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 14px;
 }
 
 /* 검색 박스 */
 .searchBox {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 8px 12px;
-    border-radius: 999px;
-    background-color: #ffffff;
-    border: 1px solid #dddddd;
+    padding: 10px 14px;
+    border-radius: 18px;
+    background: white;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .searchIcon {
+    margin-right: 8px;
     font-size: 14px;
-
-    .wrapper {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .searchBox {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 12px;
-        border-radius: 999px;
-        background-color: #ffffff;
-        border: 1px solid #dddddd;
-    }
-
-    .searchIcon {
-        font-size: 14px;
-    }
-
-    .searchInput {
-        border: none;
-        outline: none;
-        font-size: 13px;
-        width: 100%;
-    }
-
-    .resultCard {
-        background-color: #ffffff;
-        border-radius: 12px;
-        padding: 10px 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        border: 1px solid #eeeeee;
-    }
-
-    /* 단어 + 북마크 라인 */
-    .resultHeader {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 6px;
-    }
-
-    .word {
-        font-weight: 600;
-    }
-
-    /* 북마크 버튼 */
-    .bookmarkButton {
-        border: none;
-        background: none;
-        cursor: pointer;
-        font-size: 18px;
-        line-height: 1;
-        color: #bbbbbb;
-        padding: 0;
-    }
-
-    .bookmarkActive {
-        color: #ffb400;
-    }
-
-    .meaningList {
-        padding-left: 18px;
-        margin: 0;
-        font-size: 13px;
-    }
-
 }
 
 .searchInput {
     border: none;
     outline: none;
-    font-size: 13px;
-    width: 100%;
+    flex: 1;
+    font-size: 14px;
 }
 
 /* 결과 카드 */
 .resultCard {
-    background-color: #ffffff;
-    border-radius: 12px;
-    padding: 10px 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    border: 1px solid #eeeeee;
+    padding: 12px 14px;
+    border-radius: 18px;
+    background: white;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* 카드 헤더 */
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .word {
-    font-weight: 600;
-    margin-bottom: 4px;
+    font-weight: 700;
+    font-size: 14px;
 }
 
-.meaningList {
-    padding-left: 18px;
-    margin: 0;
-    font-size: 13px;
-}
-
-.resultHeader {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 6px;
-}
-
+/* 북마크 버튼 */
 .bookmarkButton {
     border: none;
-    background: none;
+    background: transparent;
     cursor: pointer;
     font-size: 18px;
-    line-height: 1;
-    color: #bbbbbb;
     padding: 0;
 }
 
-.bookmarkActive {
-    color: #ffb400;
-    /* 노란 별 */
+/* 뜻 리스트 */
+.meaningList {
+    margin-left: 18px;
+    font-size: 13px;
+    line-height: 1.5;
+    margin-top: 6px;
+}
+
+.error {
+    font-size: 12px;
+    color: #d94141;
+    padding-left: 3px;
+}
+
+.loading {
+    font-size: 12px;
+    color: #666;
+    padding-left: 3px;
 }

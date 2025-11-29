@@ -1,109 +1,124 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./DictionaryPanel.module.css";
 
-type BookmarkItem = {
+type DictResult = {
     word: string;
-    meanings: string[];
+    meaningsKo: string[];
 };
 
 export default function DictionaryPanel() {
-    const [word, setWord] = useState("endeavor");
-    const [meaning, setMeaning] = useState<string[]>([
-        "..하려고 노력하다, 애쓰다",
-        "노력, 시도",
-    ]);
+    const [query, setQuery] = useState("");
+    const [result, setResult] = useState<DictResult | null>(null);
+    const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
 
-    const [bookmarks, setBookmarks] = useState<BookmarkItem[]>([]);
+    // ⭐ 북마크 목록
+    const [bookmarks, setBookmarks] = useState<string[]>([]);
 
-    // 처음 마운트 시 localStorage에서 북마크 불러오기
-    useEffect(() => {
-        if (typeof window === "undefined") return;
-        const stored = window.localStorage.getItem("newsPaperBookmarks");
-        if (stored) {
-            try {
-                const parsed = JSON.parse(stored) as BookmarkItem[];
-                setBookmarks(parsed);
-            } catch (e) {
-                console.error(e);
-            }
-        }
-    }, []);
+    // ⭐ 북마크 추가/삭제
+    const toggleBookmark = () => {
+        if (!result) return;
 
-    const normalizedWord = word.trim().toLowerCase();
-
-    const isBookmarked = useMemo(
-        () => !!normalizedWord && bookmarks.some((b) => b.word.toLowerCase() === normalizedWord),
-        [bookmarks, normalizedWord]
-    );
-
-    const saveBookmarks = (next: BookmarkItem[]) => {
-        setBookmarks(next);
-        if (typeof window !== "undefined") {
-            window.localStorage.setItem("newsPaperBookmarks", JSON.stringify(next));
-        }
-    };
-
-    const handleBookmark = () => {
-        const displayWord = word.trim();
-        if (!displayWord) return;
-
-        if (isBookmarked) {
-            const next = bookmarks.filter(
-                (b) => b.word.toLowerCase() !== normalizedWord
-            );
-            saveBookmarks(next);
+        if (bookmarks.includes(result.word)) {
+            setBookmarks(bookmarks.filter((w) => w !== result.word));
         } else {
-            const next: BookmarkItem[] = [
-                ...bookmarks,
-                { word: displayWord, meanings: meaning },
-            ];
-            saveBookmarks(next);
+            setBookmarks([...bookmarks, result.word]);
         }
     };
 
-    const handleSearch = (e: React.FormEvent) => {
-        e.preventDefault();
-        const trimmed = word.trim();
-        if (!trimmed) return;
-        // TODO: 여기서 사전 API 호출 → setMeaning([...])
-    };
+    const isBookmarked = result && bookmarks.includes(result.word);
+
+    // 🔁 실시간 자동 검색 (0.4초 디바운스)
+    useEffect(() => {
+        const trimmed = query.trim();
+
+        if (!trimmed) {
+            setResult(null);
+            setError(null);
+            return;
+        }
+
+        const timer = setTimeout(async () => {
+            try {
+                setLoading(true);
+                setError(null);
+
+                const res = await fetch(
+                    `/api/dictionary?word=${encodeURIComponent(trimmed)}`
+                );
+
+                if (!res.ok) {
+                    const data = await res.json().catch(() => ({}));
+                    setError(data.error || "뜻을 찾을 수 없습니다.");
+                    setResult(null);
+                    return;
+                }
+
+                const data = await res.json();
+
+                const mapped: DictResult = {
+                    word: data.word,
+                    meaningsKo:
+                        Array.isArray(data.meaningsKo) && data.meaningsKo.length > 0
+                            ? data.meaningsKo
+                            : ["뜻을 가져오지 못했습니다."],
+                };
+
+                setResult(mapped);
+            } catch (err) {
+                console.error(err);
+                setError("사전을 불러오는 중 오류가 발생했습니다.");
+                setResult(null);
+            } finally {
+                setLoading(false);
+            }
+        }, 400);
+
+        return () => clearTimeout(timer);
+    }, [query]);
 
     return (
         <div className={styles.wrapper}>
             {/* 검색창 */}
-            <form className={styles.searchBox} onSubmit={handleSearch}>
+            <div className={styles.searchBox}>
                 <span className={styles.searchIcon}>🔍</span>
                 <input
                     className={styles.searchInput}
-                    value={word}
-                    onChange={(e) => setWord(e.target.value)}
-                    placeholder="검색할 단어를 입력하세요"
+                    placeholder="영어 단어 입력 (예: endeavor)"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
                 />
-            </form>
-
-            {/* 결과 박스 */}
-            <div className={styles.resultCard}>
-                <div className={styles.resultHeader}>
-                    <div className={styles.word}>{word}</div>
-                    <button
-                        type="button"
-                        className={`${styles.bookmarkButton} ${isBookmarked ? styles.bookmarkActive : ""
-                            }`}
-                        onClick={handleBookmark}
-                        aria-label="단어 북마크"
-                    >
-                        {isBookmarked ? "★" : "☆"}
-                    </button>
-                </div>
-
-                <ol className={styles.meaningList}>
-                    {meaning.map((m, idx) => (
-                        <li key={idx}>{m}</li>
-                    ))}
-                </ol>
             </div>
+
+            {error && <div className={styles.error}>{error}</div>}
+            {loading && !error && <div className={styles.loading}>검색 중...</div>}
+
+            {/* 결과 카드 */}
+            {result && !error && (
+                <div className={styles.resultCard}>
+                    {/* 상단: 단어 + 북마크 버튼 */}
+                    <div className={styles.cardHeader}>
+                        <div className={styles.word}>{result.word}</div>
+
+                        <button
+                            className={styles.bookmarkButton}
+                            onClick={toggleBookmark}
+                            aria-label="북마크 추가"
+                        >
+                            {isBookmarked ? "⭐" : "☆"}
+                        </button>
+                    </div>
+
+                    {/* 뜻 리스트 */}
+                    <ol className={styles.meaningList}>
+                        {result.meaningsKo.map((meaning, idx) => (
+                            <li key={idx}>{meaning}</li>
+                        ))}
+                    </ol>
+                </div>
+            )}
         </div>
     );
 }
