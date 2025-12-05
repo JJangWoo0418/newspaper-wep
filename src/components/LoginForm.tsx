@@ -4,6 +4,8 @@
 import Image from "next/image";
 import { useState } from "react";
 import styles from "./LoginForm.module.css";
+import { signIn } from "next-auth/react";
+
 
 export default function LoginForm() {
     const [remember, setRemember] = useState(false);
@@ -48,7 +50,10 @@ export default function LoginForm() {
             </div>
 
             {/* Kakao Login */}
-            <button className={`${styles.socialButton} ${styles.kakaoButton}`}>
+            <button
+                className={`${styles.socialButton} ${styles.kakaoButton}`}
+                onClick={() => signIn("kakao", { callbackUrl: "/main" })}
+            >
                 <Image
                     src="/images/KakaoLogin-Button.png"
                     alt="kakao"
@@ -58,7 +63,10 @@ export default function LoginForm() {
             </button>
 
             {/* Google Login */}
-            <button className={`${styles.socialButton} ${styles.googleButton}`}>
+            <button
+                className={`${styles.socialButton} ${styles.googleButton}`}
+                onClick={() => signIn("google", { callbackUrl: "/main" })}
+            >
                 <Image
                     src="/images/GoogleLogin-Button.png"
                     alt="google"

@@ -18,6 +18,7 @@
     position: relative;
     width: 100%;
     height: 180px;
+    overflow: hidden;
 }
 
 .image {
@@ -64,4 +65,40 @@
 
 .date {
     font-weight: 400;
+}
+
+/* 중앙 로딩 스피너 컨테이너 */
+.spinnerContainer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+}
+
+/* 예쁜 원형 로딩 스피너 */
+.spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid rgba(255, 255, 255, 0.4);
+    border-top-color: #ff8d3a;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+/* 스피너 회전 애니메이션 */
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* 이미지 페이드인 효과 */
+.image {
+    opacity: 0;
+    transition: opacity 0.7s ease-in-out;
+}
+
+.image.show {
+    opacity: 1;
 }

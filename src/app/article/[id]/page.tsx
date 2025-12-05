@@ -6,6 +6,7 @@ import styles from "./articleDetail.module.css";
 import DictionaryPanel from "@/components/DictionaryPanel";
 import type { Article } from "@/types/article";
 import { useRouter } from "next/navigation";
+import { title } from "process";
 
 interface ArticlePageProps {
     params: Promise<{ id: string }>;
@@ -18,6 +19,7 @@ export default function ArticleDetailPage({ params }: ArticlePageProps) {
     const { id } = use(params);
 
     const [article, setArticle] = useState<Article | null>(null)
+
 
     // 언어 토글
     const [lang, setLang] = useState("ko"); // 기본: 한글
@@ -33,8 +35,20 @@ export default function ArticleDetailPage({ params }: ArticlePageProps) {
             const res = await fetch("/api/news");
             const list: Article[] = await res.json();
     
+            // 현재 기사 찾기
             const found = list.find((a) => a.id === id);
             setArticle(found ?? null);
+    
+            if (found) {
+                // 현재 기사 제외한 나머지 목록
+                const others = list.filter((a) => a.id !== found.id);
+    
+                // 랜덤으로 섞기
+                const shuffled = [...others].sort(() => Math.random() - 0.5);
+    
+                // 5개만 관련 기사로 저장
+                setRelatedArticles(shuffled.slice(0, 5));
+            }
         }
         load();
     }, [id]);
@@ -107,9 +121,10 @@ export default function ArticleDetailPage({ params }: ArticlePageProps) {
                             <li
                                 key={a.id}
                                 className={styles.relatedItem}
-                                onClick={() => (window.location.href = `/article/${a.id}`)}
+                                onClick={() => router.push(`/article/${a.id}`)}
                             >
                                 {a.title}
+
                                 {idx < relatedArticles.length - 1 && (
                                     <div className={styles.relatedDivider} />
                                 )}
